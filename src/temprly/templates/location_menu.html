@@ -1,0 +1,62 @@
+<script>
+	function addsensor(loc_id){
+				title = 'Add sensor'
+				get_url = 'sensors/add/' + loc_id
+				csrf_token = "{% csrf_token %}"
+				//TODO: dont refresh whole menu
+				ajax_form(title, get_url, csrf_token, function(data){refresh_menu();showReadings();})
+	};
+		
+	function editsensor(loc_id, sen_id){
+			title = 'Update sensor'
+			get_url = 'sensors/edit/' + loc_id  + '/' + sen_id
+			csrf_token = "{% csrf_token %}"
+			//TODO: dont refresh whole menu
+			ajax_form(title, get_url, csrf_token, function(data){refresh_menu();showReadings();})
+	};
+	
+	function delsensor(loc_id, sen_id, sen_name){
+			msg = "WARNING: this will delete the sensor " + sen_name + " including *all* readings produced by it.  Are you sure?"
+			yes_fun = function() {
+						$.get('sensors/del/' + loc_id  + '/' + sen_id, 
+						//TODO: handle failure
+							function(data) {
+								//delete the html tag (cheaper than doing a refresh)
+								$( '#sensor_' + loc_id + "_" + sen_id ).remove()
+								showReadings();
+							});
+				  };
+				  
+			confirm_dialog("Delete sensor " + sen_name, msg, yes_fun)
+	};
+</script>			
+
+			{% if locations %}
+			{% for loc in locations %}
+			<h3 id="{{loc.id}}"><a href="#">{{loc.name}}</a></h3>
+			<div id="{{loc.id}}_div" style="position:relative">
+				<p>
+					{{loc.description}}
+				</p>
+				<p>
+					{% if loc.sensor_list.all %}
+						Sensors:
+						<p id="sensors_{{loc.id}}">
+							{% for s in loc.sensor_list.all %}
+								<div id="sensor_{{loc.id}}_{{s.id}}">
+									<a href="#" onclick="editsensor({{loc.id}},{{s.id}});">{{s.name}}</a></input> <a href="#" onclick="delsensor({{loc.id}},{{s.id}},'{{s.name}}');"><img src="{{ STATIC_URL }}images/delete.gif"/></a>
+									<br />
+								</div>
+							{% endfor %}
+						</p>
+					{% else %}
+						No sensors defined.
+					{% endif %}
+					<button onclick="addsensor({{loc.id}});" type="button" style="">Add Sensor</button>
+				</p>
+				<button onclick="dellocation({{loc.id}},'{{loc.name}}');" type="button" style="position:absolute;bottom:10px;">Delete location</button>
+			</div>
+			{% endfor %}
+			{% else %}
+				No locations defined yet.
+			{% endif %}

@@ -1,0 +1,70 @@
+{% extends "three_rows.html" %}
+
+{% block css %}
+
+	<style type="text/css">
+
+	/* remove padding and scrolling from elements that contain an Accordion OR a content-div 
+		view-source:http://layout.jquery-dev.net/demos/accordion.html
+	*/
+	.ui-layout-center,.middle-west, 
+	.ui-layout-west, ui-layout-content { 
+		padding: 0;
+		overflow: hidden;
+	}
+
+	h3, h4 {
+		font-size:		1.1em;
+		background:		#EEF;
+		border:			1px solid #BBB;
+		border-width:	0 0 1px;
+		padding:		7px 10px;
+		margin:			0;
+	}
+	</style>
+
+
+{% endblock %}
+
+
+{% block ready %}
+			// Create an accordion menu in the west pane
+			Temprly.menu = $('#location_menu').accordion({fillSpace: true, header: 'h3'});
+			
+			//Make sure the dataview is updated when the accordion changes
+			Temprly.menu.bind( "accordionchange", function(event, ui) {
+			  showReadings(ui.newHeader.attr("id"))
+			});
+
+			$('.outer-center').height('100')
+											
+			middleLayout = $('.outer-center').layout({ 
+				center__paneSelector:	".middle-center" 
+			,	west__paneSelector:		".middle-west" 
+			,	west__size:				300 
+			,	west__spacing_open:		8 
+			,	west__spacing_closed:	12
+			// RESIZE Accordion widget when panes resize
+			,	west__onresize:		function () { Temprly.menu.accordion("resize"); }
+			}); 
+			
+			Temprly.inner_layout = middleLayout;
+			
+			setTimeout( Temprly.resize(), 1000 ); /* allow time for browser to re-render with new theme */
+			
+
+{% endblock %}
+
+
+{% block center %}
+
+		<div class="middle-west ui-widget-content" style="display: none;">
+			{% include "location_pane.html" %}
+		</div>
+		
+		<div class="middle-center ui-widget-content" style="display: none;">
+			{% include "dataview_pane.html" %}
+		</div>
+		
+
+{% endblock %}

@@ -1,0 +1,17 @@
+<script>
+function addlocation(){
+		var title = 'Add location'
+		var get_url = 'add_location'
+		var csrf_token = "{% csrf_token %}"
+		ajax_form(title, get_url, csrf_token, function(data){refresh_menu( "location_menu" );});
+};
+</script>
+
+<h3 class="ui-widget-header">Locations<button id="add_location" onclick="addlocation();" style="float: right; margin-right: 10px;">Add location</button></h3>
+<div class="ui-layout-west ui-layout-content">
+	<div id="location_menu">
+		
+	{% include "location_menu.html" %}
+	
+	</div>
+</div>

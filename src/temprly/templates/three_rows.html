@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block js %}
+	
+	<script type="text/javascript" src="{{STATIC_URL}}js/themeswitchertool.js"/></script>
+	<script type="text/javascript">google.load("visualization","1",{packages:["corechart","table"]});</script>
+	
+	<script type="text/javascript">
+			//global namespace object
+			var Temprly = {}
+		
+		$(document).ready( function() {
+	
+			//setup the global Temprly object
+			setupGlobals();
+
+			//Create the layout
+			
+				var outerLayout; 
+
+					$('#outer-container').height('100%')
+													
+					outerLayout = $('#outer-container').layout({ 
+						center__paneSelector:	".outer-center" 
+					,	spacing_open:			0 // ALL panes
+					,	spacing_closed:			0 // ALL panes
+					,	north__maxSize:			200
+					,	south__maxSize:			200
+					, resizable: false
+					, closable: false
+					//,   center__onresize: "Temprly.inner_layout.resizeAll"
+					}); 
+				
+				Temprly.outer_layout = outerLayout;
+				
+				// THEME SWITCHER
+				$('#switcher').themeswitcher({loadTheme: 'lightness'});
+					
+				{% block ready %}
+					// if a new theme is applied, it could change the height of some content,
+					// so call resizeAll to 'correct' any header/footer heights affected
+					// NOTE: this is only necessary because we are changing CSS *AFTER LOADING* using themeSwitcher
+					setTimeout( outerLayout.resizeAll(), 1000 ); /* allow time for browser to re-render with new theme */
+				{% endblock %}				
+		});
+	</script>
+{% endblock %}
+
+
+		{% block content %}
+		
+<div id="outer-container">
+
+		<div class="outer-center">
+			{% block center %}
+			{% endblock %}
+		</div> 
+	
+		<div class="ui-layout-north ui-widget-content  ui-state-error" style="display: none;">
+			{% include "header.html" %}
+		</div>
+		
+		<div class="ui-layout-south ui-widget-content ui-state-error" style="display: none;">
+			{% include "footer.html" %}
+		</div>
+	
+</div> 
+
+{% endblock %}

@@ -1,0 +1,42 @@
+
+<script>
+
+function get_profile() {
+	$.get('profile',function(data){
+		$(data).dialog({
+			autoOpen: true,
+			height: "auto",
+			width: "auto",
+			resize : "auto",
+			modal: true,
+			buttons: {
+				Ok: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+	});
+}
+
+</script>
+
+<div style="float: right; margin-right: 10px;">
+    
+    {% if user.is_authenticated %}
+    	Logged in as <a href="#" onclick="get_profile();">{{ user.username }}</a> [<a href="logout">Logout</a>]
+    {% else %}
+    <!--	Please [<a href="login">Login</a>] -->
+    {% endif %}
+</div>
+
+<script language="JavaScript">
+
+	$(document).ready( function() {
+		$('#logo').click(function() {
+			window.location = '/'	  
+		});
+	});
+</script>
+
+<div id="switcher"></div>
+<h1 id="logo" style="text-align: center;">Temprly</h1>
