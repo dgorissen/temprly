@@ -14,12 +14,12 @@ Three things I wanted to get more familiar with.
 Status
 =======
 
-The good:
+**The good:**
 
 All the basic functionality is there: registering, adding locations, sensors, submitting readings RESTfully & simple visualization
 using the Google Visualization API.  All hosted on App Engine at www.temprly.com
 
-The bad:
+**The bad:**
 
 The current code is the very basic, bare bones functionality.  There are still many TODOs, features, improvements left to do.
 Some of the things I originally had in mind:
@@ -39,7 +39,7 @@ my spare time: moving countries, buying & DIY'ing a house, becoming a dad, full 
 
 I will continue to tweak things here or there, but at least there is a record that something was done and something was learned.
 
-The Ugly:
+**The Ugly:**
 
 My graphical design abilities rival those of a drunken lemur and being colorblind does not exactly help :)  I have used JQueryUI for
 the basic theming but it really needs somebody with a talent for design & CSS to revamp.  Its just not my thing.
